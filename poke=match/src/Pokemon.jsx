@@ -5,6 +5,35 @@ import './Pokemon.css'
 function Pokemon(){
     const [array, setArray] = useState(Array(8).fill(null));
     const [pokemonList, setpokemonList] = useState([]);
+    const [pokemonA, setPokemonA] = useState([]);
+    const [count, setCount] = useState(0);
+    const [highScore, sethighScore] = useState(0);
+    
+    function addPokemon(name){
+        if(pokemonA.includes(name)){
+            setPokemonA([]);
+            sethighScore(count, highScore);
+            setCount(0);
+        }else{
+            const shuffleArray = () =>{
+                const tempArr = [...pokemonList];
+                for(let i = 0; i < tempArr.length; i++){
+                    const j = Math.floor(Math.random() * (i+1));
+                    [tempArr[i], tempArr[j]] = [tempArr[j], tempArr[i]];
+                }
+                setpokemonList(tempArr);
+            }
+            shuffleArray();
+            const newList = [...pokemonA, name];
+            setPokemonA(newList);
+            setCount(prevCount => prevCount + 1);
+        }
+        
+    }
+    useEffect(() =>{
+        //console.log(pokemonA);
+    }, [pokemonA]);
+
 
     useEffect(() => {
         const generateNumbers = () => {
@@ -50,14 +79,28 @@ function Pokemon(){
         }
     }, [array]);
     return(
-        <div className='pokemon'>
-            <div className='pokemon-name'>
-                {pokemonList.map((pokemon, index) =>(              
-                    <Design image={pokemon.image} name={pokemon.name} index={index}/>
-                ))}
+        <>
+            <div className='pokemon'>
+                <div className='pokemon-name'>
+                    {pokemonList.map((pokemon, index) =>(              
+                        <Design 
+                            image={pokemon.image} 
+                            name={pokemon.name} 
+                            index={index}
+                            onPokemonClick={addPokemon}
+                            />
+                    ))}
+
+                </div>
                 
             </div>
-        </div>
+            <div className='count'>
+                <h3>Score: {count}</h3>
+                <h3>HighScore: {highScore}</h3>
+            </div>
+        </>
+        
+        
     )
 }
 

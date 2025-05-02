@@ -1,17 +1,10 @@
 import './Design.css'
-import { useState } from 'react';
-let temp = [];
+import { useState, useEffect } from 'react';
 
-function Design({name, image, index}){
-    const [pokemonA, setPokemonA] = useState(Array(8).fill(null));
+function Design({name, image, index, onPokemonClick}){
     
-    function doThis(name){
-        temp.push(name);
-        setPokemonA(temp);
-        console.log(pokemonA);
-    }
     return(
-        <div className="Pokemons" onClick={() => doThis(name)}>
+        <div className="Pokemons" onClick={() => onPokemonClick(name)}>
             <p key={index}>{name}</p>
             <img src={image} />
         </div>
